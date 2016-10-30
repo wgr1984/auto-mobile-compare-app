@@ -11,22 +11,28 @@ import {
   Text,
   View
 } from 'react-native';
+import HomeComponent, {HomeBar} from './components/home'
+import {NavBar, NavBarModal} from './components/nav_bar'
+import {Router, routerReducer, Route, Container, Animations, Schema} from 'react-native-redux-router';
 
-export default class AutoMobileCompareApp extends Component {
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import createLogger from 'redux-logger';
+
+const loggerMiddleWare = createLogger();
+
+const createStoreWithMiddleware = applyMiddleware(loggerMiddleWare)(createStore);
+const reducer = combineReducers({routerReducer});
+let store = createStoreWithMiddleware(reducer);
+
+class AutoMobileCompareApp extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+        <Provider store={store}>
+            <Router initial="index">
+                <Route name="index" component={HomeComponent} navBar={HomeBar} title="Auto Compare App"/>
+            </Router>
+        </Provider>
     );
   }
 }
