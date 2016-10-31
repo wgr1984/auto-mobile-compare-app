@@ -14,18 +14,28 @@ import Button from 'react-native-button'
 import {NavBarBase} from './nav_bar'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import IconIon from 'react-native-vector-icons/Ionicons'
-
+import Drawer from 'react-native-drawer'
 
 export default class HomeComponent extends Component {
+    openControlPanel = () => {
+        this._drawer.open()
+    };
+
     render() {
         return (
+        <Drawer
+            ref={(ref) => this._drawer = ref}
+            content={<View />}
+        >
             <View style={styles.container}>
+
                 <Text>Home</Text>
                 <Button>Back</Button>
-                <Icon.Button name="facebook" backgroundColor="#3b5998">
+                <Icon.Button name="facebook" backgroundColor="#3b5998" onPress={this.openControlPanel.bind(this)}>
                     Login with Facebook
                 </Icon.Button>
             </View>
+        </Drawer>
         )
     }
 }
