@@ -17,6 +17,7 @@ import IconIon from 'react-native-vector-icons/Ionicons'
 import { bindActionCreators } from 'redux'
 import {connect} from 'react-redux'
 import * as actions from './actions/actions'
+import nav_styles from './nav_bar_button_styles'
 
 class SideMenuComponent extends Component {
     render() {
@@ -48,6 +49,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#AAFFFF'
+        backgroundColor: nav_styles.navBarContainer.backgroundColor
     }
 });

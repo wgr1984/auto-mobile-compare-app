@@ -10,6 +10,7 @@ import {
     Text,
     View
 } from 'react-native';
+import {navBarContainer as navBarStyle} from './nav_bar_button_styles'
 import {Router, Route, Animations, Schema} from 'react-native-redux-router'
 
 export class NavBarBase extends Component {
@@ -26,7 +27,7 @@ export class NavBarBase extends Component {
     render() {
         var Actions = this.props.routes;
         console.log("Props : " + this.props);
-        return (<NavigationBar style={styles.navBar}
+        return (<NavigationBar style={navBarStyle.navBarContainer}
                               titleColor='white'
                               buttonsColor='white'
                               statusBar= {{style:'light-content', hidden: false}}
@@ -54,9 +55,3 @@ export class NavBarModal extends React.Component {
         return <NavBarBase customPrev={<View/>} nextTitle="Close" {...this.props} rightButton={{title:'Close', handler:this.props.onNext || Actions.pop}}/>
     }
 }
-
-var styles = StyleSheet.create({
-    navBar: {
-        backgroundColor: '#0db0d9'
-    },
-});
