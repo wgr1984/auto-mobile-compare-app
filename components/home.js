@@ -9,29 +9,36 @@ import {
     Text,
     View
 } from 'react-native';
-import {Actions} from 'react-native-redux-router'
+import {actions as routerActions} from 'react-native-redux-router'
 import Button from 'react-native-button'
 import {NavBarBase} from './nav_bar'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import IconIon from 'react-native-vector-icons/Ionicons'
 import Drawer from 'react-native-drawer'
+import { bindActionCreators } from 'redux'
+import {connect} from 'react-redux'
+import * as actions from './actions/actions'
+import SideMenuComponentConnector from './side_menu'
 
-export default class HomeComponent extends Component {
-    openControlPanel = () => {
-        this._drawer.open()
-    };
-
+class HomeComponent extends Component {
     render() {
         return (
         <Drawer
             ref={(ref) => this._drawer = ref}
-            content={<View />}
+            openDrawerOffset={(viewport) => viewport.width * 0.25}
+            onClose={this.props.actions.closeDrawer}
+            onOpen={this.props.actions.openDrawer}
+            tapToClose={true}
+            type="overlay"
+            panOpenMask={0.3}
+            open={this.props.isDrawerShown}
+            content={<SideMenuComponentConnector />}
         >
             <View style={styles.container}>
 
                 <Text>Home</Text>
                 <Button>Back</Button>
-                <Icon.Button name="facebook" backgroundColor="#3b5998" onPress={this.openControlPanel.bind(this)}>
+                <Icon.Button name="facebook" backgroundColor="#3b5998" onPress={this.props.actions.openDrawer}>
                     Login with Facebook
                 </Icon.Button>
             </View>
@@ -40,7 +47,22 @@ export default class HomeComponent extends Component {
     }
 }
 
-export class HomeBar extends Component {
+function mapState(state) {
+    return {
+        isDrawerShown : state.appReducer.isDrawerShown
+    }
+}
+
+function mapDispatch(dispatch) {
+    return {
+        actions: bindActionCreators(actions, dispatch),
+        routerActions: bindActionCreators({...routerActions}, dispatch)
+    }
+}
+
+export default HomeConnector = connect(mapState, mapDispatch)(HomeComponent)
+
+class HomeBar extends Component {
     constructor (props) {
         super (props)
         this.state = {
@@ -54,15 +76,16 @@ export class HomeBar extends Component {
         });
     }
     render() {
-        var Actions = this.props.routes;
         var self = this
         return <NavBarBase {...this.props} leftButton={{
             title: "",
-            handler: () => alert('hello!'),
+            handler: this.props.actions.toggleDrawer,
             icon: self.state.backIcon
         }}/>
     }
 }
+
+exports.HomeBarContainer = connect(mapState, mapDispatch)(HomeBar)
 
 const styles = StyleSheet.create({
     container: {
@@ -71,4 +94,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#FFFFFF'
     }
-});
+})

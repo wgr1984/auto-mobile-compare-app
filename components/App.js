@@ -9,18 +9,19 @@ import {
     Text,
     View
 } from 'react-native'
-import HomeComponent, {HomeBar} from './home'
+import HomeContainer, {HomeBarContainer} from './home'
 import {NavBar, NavBarModal} from './nav_bar'
 import {Router, routerReducer, Route, Container, Animations, Schema} from 'react-native-redux-router'
-
 import { createStore, combineReducers, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import createLogger from 'redux-logger'
+import appReducer from './reducers/reducer'
 
 const loggerMiddleWare = createLogger()
 
-const createStoreWithMiddleware = applyMiddleware(loggerMiddleWare)(createStore)
-const reducer = combineReducers({routerReducer})
+const createStoreWithMiddleware = applyMiddleware(loggerMiddleWare, thunk)(createStore)
+const reducer = combineReducers({routerReducer, appReducer})
 let store = createStoreWithMiddleware(reducer)
 
 export default class AutoMobileCompareApp extends Component {
@@ -28,7 +29,7 @@ export default class AutoMobileCompareApp extends Component {
         return (
             <Provider store={store}>
                 <Router initial="index">
-                    <Route name="index" component={HomeComponent} navBar={HomeBar} title="Auto Compare App"/>
+                    <Route name="index" component={HomeContainer} navBar={HomeBarContainer} title="Auto Compare App"/>
                 </Router>
             </Provider>
         );
