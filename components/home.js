@@ -9,7 +9,7 @@ import {
     Text,
     View
 } from 'react-native';
-import {actions as routerActions} from 'react-native-redux-router'
+import {Actions as RouterActions} from 'react-native-redux-router'
 import Button from 'react-native-button'
 import {NavBarBase} from './nav_bar'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -22,6 +22,10 @@ import SideMenuComponentConnector from './side_menu'
 
 class HomeComponent extends Component {
     render() {
+        let items = [
+            {title:"Car List", callback: ()=>{this.props.routerActions.index()}}
+        ]
+
         return (
         <Drawer
             ref={(ref) => this._drawer = ref}
@@ -32,7 +36,7 @@ class HomeComponent extends Component {
             type="overlay"
             panOpenMask={0.3}
             open={this.props.isDrawerShown}
-            content={<SideMenuComponentConnector />}
+            content={<SideMenuComponentConnector items={items}/>}
         >
             <View style={styles.container}>
 
@@ -56,7 +60,7 @@ function mapState(state) {
 function mapDispatch(dispatch) {
     return {
         actions: bindActionCreators(actions, dispatch),
-        routerActions: bindActionCreators({...routerActions}, dispatch)
+        routerActions: bindActionCreators({...RouterActions}, dispatch)
     }
 }
 
@@ -76,6 +80,9 @@ class HomeBar extends Component {
         });
     }
     render() {
+        if (!this.state.backIcon) {
+            return false
+        }
         var self = this
         return <NavBarBase {...this.props} leftButton={{
             title: "",

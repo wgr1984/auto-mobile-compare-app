@@ -10,13 +10,14 @@ import {
     View
 } from 'react-native'
 import HomeContainer, {HomeBarContainer} from './home'
-import {NavBar, NavBarModal} from './nav_bar'
 import {Router, routerReducer, Route, Container, Animations, Schema} from 'react-native-redux-router'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import createLogger from 'redux-logger'
 import appReducer from './reducers/reducer'
+
+import CarQueryContainer from './car_query'
 
 const loggerMiddleWare = createLogger()
 
@@ -30,6 +31,7 @@ export default class AutoMobileCompareApp extends Component {
             <Provider store={store}>
                 <Router initial="index">
                     <Route name="index" component={HomeContainer} navBar={HomeBarContainer} title="Auto Compare App"/>
+                    <Route name="query" component={CarQueryContainer} navBar={HomeBarContainer} title="Query"/>
                 </Router>
             </Provider>
         );
