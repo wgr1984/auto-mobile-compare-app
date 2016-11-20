@@ -23,7 +23,7 @@ import SideMenuComponentConnector from './side_menu'
 class HomeComponent extends Component {
     render() {
         let items = [
-            {title:"Car List", callback: ()=>{this.props.routerActions.index()}}
+            {title:"Car List", callback: ()=>{RouterActions.query()}}
         ]
 
         return (
@@ -60,7 +60,7 @@ function mapState(state) {
 function mapDispatch(dispatch) {
     return {
         actions: bindActionCreators(actions, dispatch),
-        routerActions: bindActionCreators({...RouterActions}, dispatch)
+        //routerActions: bindActionCreators({...RouterActions}, dispatch)
     }
 }
 
